@@ -13,7 +13,7 @@ const App = () => {
       const response = await fetch(API_URL);
       const data = await response.json();
       
-      const temperature = data.current.temp_c;
+      const temperature = Math.floor(data.current.temp_c);
       const description = data.current.condition.text;
 
       setCurrentWeather({ temperature, description });
