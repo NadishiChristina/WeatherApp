@@ -7,6 +7,20 @@ import { weatherCodes } from './constants';
 
 const App = () => {
   const [currentWeather, setCurrentWeather] = useState({});
+  const [hourlyForecasts, setHourlyForecasts] = useState([]);
+  
+
+  const filterHourlyForecast = (hourlyData) => {
+    const currentHour = new Date().setMinutes(0, 0, 0);
+    const next24Hours = currentHour + 24 * 60 * 60 * 1000;
+
+    // Filter the hourly data to only include the next 24 hours
+    const next24HoursData = hourlyData.filter(({ time }) => {
+      const forecastTime = new Date(time).getTime();
+      return forecastTime >= currentHour && forecastTime <= next24Hours;
+    });
+    setHourlyForecasts(next24HoursData);
+  }
 
 
   const getWeatherDetails = async (API_URL) => {
@@ -19,6 +33,9 @@ const App = () => {
       const weatherIcon = Object.keys(weatherCodes).find((icon) => weatherCodes[icon].includes(data.current.condition.code));
 
       setCurrentWeather({ temperature, description, weatherIcon });
+      // Combine hourly data from both forecast days
+      const combinedHourlyData = [...data.forecast.forecastday[0].hour, ...data.forecast.forecastday[1].hour];
+      filterHourlyForecast(combinedHourlyData);
 
     } catch (error) {
       console.log(error);
@@ -38,7 +55,9 @@ const App = () => {
       {/* Hourly Weather Forecast List Section */}
       <div className="hourly-forecast">
         <ul className="weather-list">
-          <HourlyWeatherItem />
+        {hourlyForecasts.map((hourlyWeather) => (
+                <HourlyWeatherItem key={hourlyWeather.time_epoch} hourlyWeather={hourlyWeather} />
+              ))}
         </ul>
       </div>
 
