@@ -174,3 +174,36 @@ body{
   width: 20px;
   aspect-ratio: 1;
 }
+
+.no-results {
+  min-height: 460px;
+  display: flex;
+  color: #fff;
+  padding: 60px 40px 40px;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+}
+.no-results .title {
+  margin: 25px 0 15px;
+}
+.no-results .message {
+  line-height: 23px;
+}
+/* Responsive media query code for small screen */
+@media (max-width: 624px) {
+  body,
+  .search-section {
+    padding: 20px;
+  }
+  .hourly-forecast {
+    padding: 16px 20px;
+  }
+  .hourly-forecast .weather-list {
+    gap: 24px;
+  }
+  .no-results {
+    padding: 30px;
+    min-height: 458px;
+  }
+}
